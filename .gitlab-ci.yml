@@ -32,11 +32,11 @@ stages:
 
 .deploy_script: &deploy_script
   script:
-  - helm plugin install https://github.com/hypnoglow/helm-s3.git
-  - helm repo add stable-myapp s3://ty-helm/stable/myapp/
-  - helm repo update
+  # - helm plugin install https://github.com/hypnoglow/helm-s3.git
+  # - helm repo add stable-myapp s3://ty-helm/stable/myapp/
+  # - helm repo update
   - cat $VALUES_FILE
-  - helm upgrade devops-laravel stable-myapp/app --install --force --namespace default -f $VALUES_FILE --set image.repository=${DOCKER_IMAGE},image.tag=${DOCKER_TAG}
+  - helm upgrade devops-laravel ./helm-charts/app --install --force --namespace default -f $VALUES_FILE --set image.repository=${DOCKER_IMAGE},image.tag=${DOCKER_TAG}
 
 build:dev:
   stage: build-dev
