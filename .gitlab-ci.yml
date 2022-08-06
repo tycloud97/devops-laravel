@@ -28,7 +28,7 @@ stages:
 .build_script: &build_script
   script:
   - echo "{\"credHelpers\":{\"${REGISTRY_URL}\":\"ecr-login\"}}" > /kaniko/.docker/config.json
-  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:$DOCKER_TAG --cache=true  --cache-repo $REGISTRY_URL/$DOCKER_IMAGE --cache-ttl $CACHE_TTL
+  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:$DOCKER_TAG --cache=true  --cache-repo $DOCKER_IMAGE --cache-ttl $CACHE_TTL
 
 .deploy_script: &deploy_script
   script:
