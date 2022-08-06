@@ -42,10 +42,9 @@ build:dev:
   variables:
     <<: *dev_variables
   only:
-  - dev
   - main
-  tags:
-  - dev
+  # tags:
+  # - dev
 
 
 deploy:dev:
@@ -57,5 +56,5 @@ deploy:dev:
   only:
   - dev
   - main
-  tags:
-  - deploy
+  # tags:
+  # - deploy
