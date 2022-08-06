@@ -11,6 +11,7 @@ variables:
   DEV_ACCOUNT: 827539266883
   REGISTRY_URL: ${DEV_ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com
   DOCKER_IMAGE: ${DEV_ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/devops-laravel
+  CACHE_TTL: 2190h0m0s
 
 # stage specific env variables are defined and we use by taking advantage of yaml anchors
 .dev_variables: &dev_variables
@@ -27,10 +28,11 @@ stages:
 .build_script: &build_script
   script:
   - echo "{\"credHelpers\":{\"${REGISTRY_URL}\":\"ecr-login\"}}" > /kaniko/.docker/config.json
-  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:$DOCKER_TAG
+  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:$DOCKER_TAG --cache=true  --cache-repo $REGISTRY_URL/$DOCKER_IMAGE --cache-ttl $CACHE_TTL
 
 .deploy_script: &deploy_script
   script:
+  - helm plugin install https://github.com/hypnoglow/helm-s3.git
   - helm repo add stable-myapp s3://ty-helm/stable/myapp/
   - helm repo update
   - cat $VALUES_FILE
@@ -43,9 +45,6 @@ build:dev:
     <<: *dev_variables
   only:
   - main
-  # tags:
-  # - dev
-
 
 deploy:dev:
   stage: deploy-dev
@@ -54,7 +53,4 @@ deploy:dev:
     <<: *dev_variables
   <<: *deploy_script
   only:
-  - dev
   - main
-  # tags:
-  # - deploy
