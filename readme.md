@@ -132,3 +132,7 @@ Now you can browse your project using following url :
 > - Running the command you will get base 64 encoded string. Put the string in deploy\app\secret.yml. And then run the commands for deploying.
 
 
+
+docker build -t laraveldemo .  --platform=linux/amd64
+docker tag laraveldemo:latest 827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo:latest
+docker push 827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo:latest
