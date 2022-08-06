@@ -1,0 +1,94 @@
+# Default values for app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+## Update strategy for Deployments
+updateStrategy:
+  type: RollingUpdate
+  maxUnavailable: 50%
+  maxSurge: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  portName: http
+  externalPort: 80
+  containerPort: 80
+  livenessProbe:
+    initialDelaySeconds: 10
+    periodSeconds: 20
+    timeoutSeconds: 1
+    path: /healthz
+    port: 80
+  readinessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 1
+    failureThreshold: 5
+    path: /healthz
+    port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env: []
+  # Environment variables that need to be added to the deployment yaml file.
+  #
+  # - name: AUTH
+  #   valueFrom:
+  #     secretKeyRef:
+  #       key: auth
+  #       name: secretToken
+  # - name: BACKUP_DIRECTORY
+  #   value: /data/backup
+
+externalSecrets:
+  enabled: false
+  annotations: {}
+  data: []
+    # Please use json AWS Secretmanager secrets
+    # - key: test-secret   # This would be the AWS Secretmanager secret name
+    #   name: password     # This would be the name of the field in the kubernetes secret
+    #   property: password # The key under which the secret value is found in the AWS Secretmanager secret
+    # - key: test-secret
+    #   name: username
+    #   property: username

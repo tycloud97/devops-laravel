@@ -17,17 +17,3 @@ spec:
       - name: laravel-app
         image: 827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo:latest
         imagePullPolicy: Always
-        volumeMounts:
-        - name: app-secret
-          mountPath: "/var/www/html/secret"
-          readOnly: true
-        ports:
-        - containerPort: 80
-          name: pathao-port
-          protocol: TCP
-      volumes:
-      - name: app-secret
-        secret:
-          secretName: laravel-app-secret
-      imagePullSecrets:
-      - name: regsecret

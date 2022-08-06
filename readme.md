@@ -136,3 +136,9 @@ Now you can browse your project using following url :
 docker build -t laraveldemo .  --platform=linux/amd64
 docker tag laraveldemo:latest 827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo:latest
 docker push 827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo:latest
+
+
+helm repo update
+
+
+helm upgrade devops-laravel devops/app --install --force --namespace default -f deployment/dev.yaml --set image.repository=827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo,image.tag=latest

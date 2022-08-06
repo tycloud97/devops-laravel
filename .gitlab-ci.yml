@@ -1,0 +1,61 @@
+# TODO: build and deploy by tag and branch name. also do by commit id. this way we can have a consistent script. Also tags should result in docker tags.
+# TODO: use a values.yaml template to deploy to all stages. keep it DRY.
+# TODO: use --set to set the value for the image that will be deployed. 
+
+default:
+  image: gcr.io/kaniko-project/executor:debug
+
+# env variables available for every stage
+variables:
+  REGION: ap-southeast-1
+  DEV_ACCOUNT: 827539266883
+  REGISTRY_URL: ${DEV_ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com
+  DOCKER_IMAGE: ${DEV_ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/devops-laravel
+
+# stage specific env variables are defined and we use by taking advantage of yaml anchors
+.dev_variables: &dev_variables
+  STAGE: ${CI_COMMIT_REF_NAME}
+  DOCKER_TAG: dev # Make sure we add a sanitised tag based on the branch
+  VALUES_FILE: deployment/dev.yaml
+
+# we define the stages that need to take place for this pipeline
+stages:
+- build-dev
+- deploy-dev
+
+# we are using yaml anchors to define scripts that can be re-used
+.build_script: &build_script
+  script:
+  - echo "{\"credHelpers\":{\"${REGISTRY_URL}\":\"ecr-login\"}}" > /kaniko/.docker/config.json
+  - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_IMAGE:$DOCKER_TAG
+
+.deploy_script: &deploy_script
+  script:
+  - helm repo add stable-myapp s3://ty-helm/stable/myapp/
+  - helm repo update
+  - cat $VALUES_FILE
+  - helm upgrade devops-laravel stable-myapp/app --install --force --namespace default -f $VALUES_FILE --set image.repository=${DOCKER_IMAGE},image.tag=${DOCKER_TAG}
+
+build:dev:
+  stage: build-dev
+  <<: *build_script
+  variables:
+    <<: *dev_variables
+  only:
+  - dev
+  - main
+  tags:
+  - dev
+
+
+deploy:dev:
+  stage: deploy-dev
+  image: alpine/helm:3.2.1
+  variables:
+    <<: *dev_variables
+  <<: *deploy_script
+  only:
+  - dev
+  - main
+  tags:
+  - deploy
