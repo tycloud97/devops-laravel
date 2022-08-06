@@ -142,3 +142,5 @@ helm repo update
 
 
 helm upgrade devops-laravel devops/app --install --force --namespace default -f deployment/dev.yaml --set image.repository=827539266883.dkr.ecr.ap-southeast-1.amazonaws.com/laraveldemo,image.tag=latest
+
+kubectl create clusterrolebinding gitlab-cluster-admin --clusterrole=cluster-admin --group=system:serviceaccounts

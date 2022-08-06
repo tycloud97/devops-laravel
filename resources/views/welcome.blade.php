@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Ty
+                    Ty Test
                 </div>
 
                 <div class="links">
