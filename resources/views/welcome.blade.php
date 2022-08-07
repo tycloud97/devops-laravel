@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Ty Test Laravel CI/CD
+                    Ty Demo Laravel CI/CD
                 </div>
                 
                 <div class="m-b-md">
