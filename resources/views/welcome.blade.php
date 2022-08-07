@@ -81,6 +81,10 @@
                 <div class="title m-b-md">
                     Ty Test Laravel CI/CD
                 </div>
+                
+                <div class="m-b-md">
+                    Server IP: {{ env('SERVER_ADDR') }}
+                </div>
 
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>
