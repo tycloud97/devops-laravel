@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Ty Laravel
+                    Ty Laravel CMC
                 </div>
                 
                 <div class="m-b-md">
