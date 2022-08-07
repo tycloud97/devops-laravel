@@ -79,8 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{ env('SERVER_ADDR') }}
-                    Ty Test CMC 24444423 
+                    Ty Test Laravel CI/CD
                 </div>
 
                 <div class="links">
