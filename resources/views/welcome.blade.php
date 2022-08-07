@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Ty Test
+                    Ty Test CMC
                 </div>
 
                 <div class="links">
