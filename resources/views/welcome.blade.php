@@ -80,7 +80,7 @@
             <div class="content">
                 <div class="title m-b-md">
                     {{ env('SERVER_ADDR') }}
-                    Ty Test CMC 223 
+                    Ty Test CMC 24444423 
                 </div>
 
                 <div class="links">
