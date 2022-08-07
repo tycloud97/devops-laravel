@@ -79,7 +79,8 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Ty Test CMC
+                    {{ env('SERVER_ADDR') }}
+                    Ty Test CMC 223 
                 </div>
 
                 <div class="links">
